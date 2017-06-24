@@ -1,0 +1,530 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<title>Malnutrition</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/home.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
+.mySlides {display:none}
+.w3-tag, .fa {cursor:pointer}
+.w3-tag {height:15px;width:15px;padding:0;margin-top:6px}
+</style>
+<body>
+
+<!-- Links (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-blue-gray w3-card-2 w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="{% url 'home:home' %}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
+    <a href="#plans" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">State of Malnutrition</a>
+    <a href="#about" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Sparks</a>
+    <div class="w3-dropdown-hover w3-hide-small">
+      <button class="w3-padding-large w3-button" title="More">TOPICS <i class="fa fa-caret-down"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'home:education' %}" class="w3-bar-item w3-button">EDUCATION</a>
+        <a href="{% url 'home:poverty' %}" class="w3-bar-item w3-button">POVERTY</a>
+        <a href="{% url 'home:social' %}" class="w3-bar-item w3-button">SOCIAL WELFARE</a>
+        <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button">HYGIENE</a>
+      </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More">{{ userpro.name }} <img src="{{ userpro.image.url }}" class="w3-circle" style="height:25px;width:25px" alt="{{ userpro.user }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button">Logout</a>
+        <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button">Profile</a>
+        <a href="{% url 'accounts:edit_profile' %}" class="w3-bar-item w3-button">Edit Profile</a>
+        <a href="{% url 'accounts:change_password' %}" class="w3-bar-item w3-button">Change Password</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More"><img src="{% static 'accounts/av1.jpg' %}" class="w3-circle" style="height:25px;width:25px" alt="{{ user.name }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:login' %}" class="w3-bar-item w3-button">Login</a>
+        <a href="{% url 'accounts:reset_password' %}" class="w3-bar-item w3-button">Forgot Password?</a>
+        <a href="{% url 'accounts:register' %}" class="w3-bar-item w3-button">Register</a>
+      </div>
+    </div>
+    {% endif %}
+    <a href="#contact" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Suggestions?</a>
+
+<!--
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Social Welfare</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Hygiene & Sanitation</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Social Welfare</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Hygiene & Sanitation</a> -->
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+    <a href="#plans" class="w3-bar-item w3-button w3-padding-large">State of Malnutrition</a>
+    <a href="#about" class="w3-bar-item w3-button w3-padding-large">Sparks</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-padding-large">Suggestions?</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-padding-large">EDUCATION</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-padding-large">POVERTY</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-padding-large">SOCIAL WELFARE</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-padding-large">HYGIENE & SANITATION</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button w3-padding-large">Logout</a>
+    <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button w3-padding-large">Profile</a>
+    <a href="{% url 'accounts:edit_profile' %}" class="w3-bar-item w3-button w3-padding-large">Edit Profile</a>
+    <a href="{% url 'accounts:change_password' %}" class="w3-bar-item w3-button w3-padding-large">Change Password</a>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="w3-bar-item w3-button w3-padding-large">Login</a>
+    <a href="{% url 'accounts:register' %}" class="w3-bar-item w3-button w3-padding-large">Register</a>
+    <a href="{% url 'accounts:reset_password' %}" class="w3-bar-item w3-button w3-padding-large">Forgot Password</a>
+    {% endif %}
+  </div>
+</div>
+
+
+<!-- <div class="w3-top">
+  <div class="w3-row w3-large w3-light-grey">
+    <div class="w3-col s3">
+      <a href="{% url 'home:home' %}" class="w3-button w3-block">Home</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#plans" class="w3-button w3-block">State of Malnutrition</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#about" class="w3-button w3-block">Sparks</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#contact" class="w3-button w3-block">Suggest</a>
+    </div>
+  </div>
+</div> -->
+
+<!-- Content -->
+<div class="w3-content" style="max-width:1100px;margin-top:80px;margin-bottom:80px">
+
+
+  <div class="w3-panel">
+    <h1><b>MALNUTRITION</b></h1>
+    <p>Malnutrition refers to deficiencies, excesses or imbalances in a person’s intake of energy and/or nutrients. The term malnutrition covers 2 broad groups of conditions. One is ‘undernutrition’—which includes stunting (low height for age), wasting (low weight for height), underweight (low weight for age) and micronutrient deficiencies or insufficiencies (a lack of important vitamins and minerals). The other is overweight, obesity and diet-related noncommunicable diseases (such as heart disease, stroke, diabetes and cancer).</p>
+    <p>
+        It is responsible for nearly 45 per cent of deaths in children under-five, and around 3.1 million deaths in children under five annually. UNICEF report on child malnutrition shows that India is home to 61 million stunted children under five and 38 per cent of all stunted children in the world.
+    </p>
+  </div>
+
+  <!-- Slideshow -->
+  <div class="w3-container">
+    <div class="w3-display-container mySlides">
+      <img src="{% static "accounts/mal-country.jpg" %}" style="width:100%">
+    </div>
+    <div class="w3-display-container mySlides">
+      <img src="{% static "accounts/stunting-in-children.jpg" %}" style="width:100%">
+    </div>
+    <div class="w3-display-container mySlides">
+      <img src="{% static "accounts/malnut.jpg" %}" style="width:100%">
+    </div>
+
+    <!-- Slideshow next/previous buttons -->
+    <div class="w3-container w3-dark-grey w3-padding w3-xlarge">
+      <div class="w3-left" onclick="plusDivs(-1)"><i class="fa fa-arrow-circle-left w3-hover-text-teal"></i></div>
+      <div class="w3-right" onclick="plusDivs(1)"><i class="fa fa-arrow-circle-right w3-hover-text-teal"></i></div>
+
+      <div class="w3-center">
+        <span class="w3-tag demodots w3-border w3-transparent w3-hover-white" onclick="currentDiv(1)"></span>
+        <span class="w3-tag demodots w3-border w3-transparent w3-hover-white" onclick="currentDiv(2)"></span>
+        <span class="w3-tag demodots w3-border w3-transparent w3-hover-white" onclick="currentDiv(3)"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="w3-row-padding" id="plans">
+    <div class="w3-center w3-padding-64">
+      <h3>MALNUTRITION-A NATIONAL SHAME</h3>
+      <P>State of Malnutrition in India</P>
+    </div>
+
+    <div class="w3-third w3-margin-bottom">
+      <ul class="w3-ul w3-border w3-center w3-hover-shadow">
+        <li class="w3-xlarge w3-padding-32" style="background-color: #ff9933;">CAUSES</li>
+        <li class="w3-padding-16">Inadequate sanitation, which triggers increases in infection-borne deficiencies in nutrients.</li>
+        <li class="w3-padding-16">Lack of food: this is common among the low income group as well as those who are homeless.</li>
+        <li class="w3-padding-16">Those with a limited knowledge about nutrition tend to follow an unhealthy diet with not enough nutrients, vitamins and minerals and are at risk of malnutrition.</li>
+        <li class="w3-padding-16">Those with eating disorders like anorexia nervosa have difficulty maintaining adequate nutrition.</li>
+        <li class="w3-padding-16">Some medications tend to alter the body’s ability to absorb and break down nutrients and taking these may lead to malnutrition.</li>
+        <li class="w3-padding-16">Among children lack of knowledge of adequate feeding among parents is the leading cause of malnutrition worldwide.</li>
+        <li class="w3-padding-16">Premature babies are at a higher risk.</li>
+        <li class="w3-light-grey w3-padding-24">
+          <button class="w3-button w3-green w3-padding-large" onclick="location.href='#causes'">LEARN MORE</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="w3-third w3-margin-bottom">
+      <ul class="w3-ul w3-border w3-center w3-hover-shadow">
+        <li class="w3-xlarge w3-padding-32 w3-text-blue" style="background-color: #FFFFFF">CURRENT SCENARIO</li>
+        <li class="w3-padding-16">About a third of Indian’s are believed to be malnourished and over 40% of children receive less food than they should.</li>
+        <li class="w3-padding-16">India’s Global Hunger Index India ranking of 67 the 80 nations with the worst hunger situation places us even below North Korea or Sudan.</li>
+        <li class="w3-padding-16">44% of children under the age of 5 are underweight, while 72% of infants have anaemia.</li>
+        <li class="w3-padding-16">38.7% are considered stunted (low height for age)</li>
+        <li class="w3-padding-16">29.4% are considered underweight (low weight for age)</li>
+        <li class="w3-padding-16"> The National Nutrition Mission (a multi-sectoral programme earmarked for 200 high-burden districts) has not taken off in any meaningful manner.</li>
+        <li class="w3-padding-16">Malnourished children are more susceptible to infections and lack of health care services</li>
+        <li class="w3-light-grey w3-padding-24">
+          <button class="w3-button w3-green w3-padding-large" onclick="location.href='#current'">LEARN MORE</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="w3-third w3-margin-bottom">
+      <ul class="w3-ul w3-border w3-center w3-hover-shadow">
+        <li class="w3-xlarge w3-padding-32" style="background-color: #138808">PLAN OF ACTION</li>
+        <li class="w3-padding-16">Stunting, could be dramatically reduced if children receive – adequate feeding, health care and environmental health.</li>
+        <li class="w3-padding-16">Nutritional planning focused on improving production and distribution of food is needed to reach the grassroots of the society.</li>
+        <li class="w3-padding-16">Under the Nutri-Farms initiative, farmer groups will cultivate varieties rich in micro-nutrients.</li>
+        <li class="w3-padding-16">Host workshops where we can discuss a wide array of topics related to nutrition like understanding the biology of under nutrition, nutrition indicators and success stories.</li>
+        <li class="w3-padding-16">Strengthen linkages between agriculture and nutrition to ensure effective integration of services provided to the community.</li>
+        <li class="w3-padding-16">Reduction of post-harvest losses.</li>
+        <li class="w3-padding-16">Produce special supplements like Amylase Rich Flour for supplementing the diets of severely malnourished children</li>
+        <li class="w3-light-grey w3-padding-24">
+          <button class="w3-button w3-green w3-padding-large" onclick="location.href='#next'">LEARN MORE</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="w3-center w3-red" id='causes'>
+    <div>
+    <div class="w3-center w3-padding-64">
+      <span class="w3-xlarge w3-border-dark-grey w3-padding-16">CAUSES OF MALNUTRITION</span>
+    </div>
+      <div class="w3-twothird w3-container">
+      <p>
+        We know Bill Gates saying last year that if he could wave a magic wand to solve any global health problem, he would use it to end malnutrition. It’s easy to understand why. Almost every challenge we face in global health and development is made worse by malnutrition. It makes sick children sicker and poor countries poorer. It robs young people of the opportunity to reach their full potential. And it traps communities in cycles of poverty.
+      </p>
+      <P>
+        Reasons for this challenge stem from a lack of an institutional framework to address malnutrition, a lack of monitoring and accountability in publicly funded nutrition programs and a lack of convergence among multiple governments on an approach to address this issue.
+      </P>
+      <p>
+        According to Nobel Prize Winner for Economics Angus Deaton, malnutrition in India is not just related to calorie intake, but India’s dependence on a carbohydrate-based diet with low protein and fat content.  He also addressed inadequate sanitation, which triggers increases in infection-borne deficiencies in nutrients. India’s malnutrition problem is said to be even worse than Burkina Faso, Haiti, Bangladesh or North Korea.
+      </p>
+      <p>
+        Some of the major causes for malnutrition in India is Economic inequality. Due to the low social status of some population groups, their diet often lacks in both quality and quantity. Women who suffer malnutrition are less likely to have healthy babies. In India, mothers generally lack proper knowledge in feeding children. Consequently, new born infants are unable to get adequate amount of nutrition from their mothers.
+      </p>
+      <p>
+        Most major food and nutrition crises do not occur because of a lack of food, but rather because people are too poor to obtain enough food. Non-availability of food in markets, difficult access to markets due to lack of transportation, and insufficient financial resources are all factors contributing to the food insecurity of the most vulnerable populations.
+      </p>
+      </div>
+      <div class="w3-third">
+        <img src="{% static "accounts/rsz_mal-state.jpg" %}">
+        <p><br></p>
+      </div>
+      </div>
+
+
+  <!-- Grid -->
+  <div class="w3-row">
+    <div class="w3-col l3 m6 w3-sand w3-container w3-padding-16">
+      <h3>Illness</h3>
+      <p>Illness and disease resulting from maternal and child under nutrition.</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-khaki w3-container w3-padding-16">
+      <h3>Improper Diet</h3>
+      <p>Changing diets and patterns of physical activity.</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-orange w3-container w3-padding-16">
+      <h3>Nutrient-Deficiency</h3>
+      <p>Vitamin and mineral deficiency such as vitamin A, iron, etc.</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-deep-orange w3-container w3-padding-16">
+      <h3>Poverty</h3>
+      <p>Socio-economic factors and lack of hygienic conditions.</p>
+    </div>
+    <p><br></p>
+  </div>
+
+  <!-- Grid -->
+</div>
+
+  <div class="w3-center" id='current'>
+    <div>
+    <div class="w3-center w3-padding-64">
+      <span class="w3-xlarge w3-border-dark-grey w3-padding-16">CURRENT STATE OF MALNUTRITION</span>
+    </div>
+      <div class="w3-twothird w3-container">
+      <p>
+        World Bank data indicates that India has one of the world’s highest demographics of children suffering from malnutrition – said to be double that of Sub-Saharan Africa with dire consequences. India’s Global Hunger Index India ranking of 67 the 80 nations with the worst hunger situation places us even below North Korea or Sudan. 44% of children under the age of 5 are underweight, while 72% of infants have anaemia. India needs a lot more to be done to tackle the menace of malnutrition and NGOs are plugging the gaps in government schemes. Across the country, malnutrition is the cause of death for roughly half the 1.3 million children who die before their fifth birthday each year.
+      </p>
+      <p>
+      The burden of malnutrition is much higher in South Asia compared to that in Africa and other parts of the world. The prevalence of underweight and stunting in South Asia has been recorded as 46 and 44 percent, respectively [9]. Chronic malnutrition has been a persistent problem for young children in Sub-Saharan Africa. A high percentage of these children fail to reach the normal international standard height for their age; that is, they are “stunted” In contrast, the percentage of children stunted in Southeast Asia dropped from 52 percent to 42 percent between 1990 and 2006. The number of undernourished (low weight for age)people of all ages in sub-Saharan Africa increased from about 90 million in 1970 to 225 million in 2008, and was projected to add another 100 million by 2015, even before the world food price hikes.
+      </p>
+      <p>
+        “The foundation of an individual’s health and well-being is laid during the first years of life.” Even up to 5 years of age, a child is at risk of suffering from disease, low birth weight, stunting, wasting, obesity, anemia, vitamin A deficiency or death from malnutrition.
+      </p>
+      <p>
+        Globally, it is estimated that there are nearly 20 million children who are severely acutely malnourished,” while only 2 million received treatment for SAM in 2011-an improvement over 2009, when only 1 million were treated.
+        SAM is identifiable both before further complications develop and before a child’s health deteriorates to the point of death, and there are simple and cost-effective solutions for it. “Improved intake of micronutrients, especially of vitamin A, iron and iodine, would strongly reduce mortality and morbidity among young children and women, and would significantly improve children’s learning capacity.”
+      </p>
+      </div>
+      <div class="w3-third">
+      <br>
+        <img src="{% static "accounts/mal-india.jpg" %}">
+        <p><br></p>
+      </div>
+      </div>
+
+
+  <!-- Grid -->
+  <div class="w3-row">
+    <div class="w3-col l3 m6 w3-light-grey w3-container w3-padding-16">
+      <h3>Nutrituous food</h3>
+      <p>Malnutrition is still prevalent in the country, as only 50.5 percent infants of six to eight months receive solid, semi-solid and soft food</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-grey w3-container w3-padding-16">
+      <h3>Anaemia</h3>
+      <p>Around 69.5 percent of Indian children aged between six to 35 months are suffering from anaemia</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-dark-grey w3-container w3-padding-16">
+      <h3>Vaccination</h3>
+      <p>Vaccination has also not reached its target as only 65.3 percent children of 12 to 23 months have received full immunisation</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-black w3-container w3-padding-16">
+      <h3>Poor Health</h3>
+      <p>Around 55 percent of Indian women aged between 15 and 49 have anaemia or low blood cell count</p>
+    </div>
+
+<p><br></p>
+  </div>
+
+  <!-- Grid -->
+</div>
+
+
+  <div class="w3-center w3-container w3-green" id='next'>
+    <div>
+    <div class="w3-center w3-padding-64">
+      <span class="w3-xlarge w3-border-dark-grey w3-padding-16">PLANS TO ERADICATE MALNUTRITION</span>
+    </div>
+      <div class="w3-twothird">
+      <p>
+        Overcoming malnutrition in India would require a multifaceted approach including education for girls, availability of safe drinking water and vaccinations and public interventions focusing on socioeconomic development. More research is required in this area to tackle this challenge.
+      </p>
+      <p>
+        Although India has taken many programs including improving salt iodization, improving breastfeeding and improving large-scale food fortification, the country needs to make fighting malnutrition a national priority to overcome this tremendous challenge.
+      </p>
+      <p>
+        These ‘nutrition-specific’ interventions are only part of the answer. They work best when coupled with ‘nutrition-sensitive’ programmes like girls’ education, delaying marriage and first pregnancy, access to safe drinking water, increased vaccination, and making sure that the agricultural system produces safe, affordable, nutritious foods year round. In short, we need a multifaceted solution. That’s not easy. Even so, we know that progress against malnutrition is possible because we see it happening already.
+      </p>
+      <p>
+        Every country that has made significant progress on this issue has followed a similar playbook. They’ve made ending malnutrition a national priority. They’ve coordinated across ministries. They’ve developed measurements and mechanisms to hold themselves accountable. And they’ve refused to let the problem fall off the agenda. Brazil’s efforts, for example, virtually eliminated malnutrition and dramatically reduced stunted growth and development by 80% within a generation.
+      </p>
+      <p>
+        There are many reasons to be optimistic for India too. India is already taking important steps with dramatic improvements in salt iodization, vitamin A supplements and deworming twice a year, improving breastfeeding, and committing to large-scale food fortification.
+      </p>
+
+      </div>
+      <div class="w3-container w3-third">
+      <p><br></p>
+        <img src="{% static "accounts/bal-diet.jpeg" %}">
+      <p><br></p>
+        <img src="{% static "accounts/news-malnut.jpg" %}">
+        <p><br></p>
+      </div>
+      </div>
+
+
+  </div>
+
+  <!-- Grid -->
+  <div class="w3-row">
+    <div class="w3-col l3 m6 w3-khaki w3-container w3-padding-16">
+      <h3>Nutrition</h3>
+      <p>Making sure that the agricultural system produces safe, affordable, nutritious foods.</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-lime w3-container w3-padding-16">
+      <h3>Sanitation</h3>
+      <p>Access to safe drinking water, increased vaccination and fight against poverty.</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-light-green w3-container w3-padding-16">
+      <h3>Micronutrients</h3>
+      <p>Incresed intake of vitamins and minerals such as vitamin A, zinc, iron and calcium.</p>
+    </div>
+
+    <div class="w3-col l3 m6 w3-green w3-container w3-padding-16">
+      <h3>Technology</h3>
+      <p>Lack of breastfeeding practices and work on technology like Single-celled protein.</p>
+    </div>
+  <p><br></p>
+  </div>
+
+</div>
+
+  <div class="w3-row-padding w3-blue-grey" id="about">
+  <div class="w3-content" style="max-width:1100px;margin-top:80px;margin-bottom:80px">
+
+    <div class="w3-center w3-padding-64">
+      <span class="w3-xlarge w3-bottombar w3-border-dark-grey w3-padding-16">THE SPARKS</span>
+    </div>
+    <div class="w3-container">
+    <form method="post">
+    {% csrf_token %}
+    {{ form_one.as_p }}
+    <button type="submit" class="w3-button w3-block w3-red">FILTER SPARKS</button>
+    <p><br></p>
+  </form>
+  </div>
+  <div>
+    {% for spark in sparks %}
+    <div class="w3-third w3-margin-bottom w3-container">
+      <div class="w3-card-4">
+      {% if spark.image %}
+      <img src="{{ spark.image.url }}" style="width: 100%;">
+      {% elif 'M' in spark.gender %}
+        <img src="{% static "accounts/m-user.png" %}" style="width:100%">
+      {% elif 'F' in spark.gender %}
+        <img src="{% static "accounts/f-user.png" %}" style="width:100%">
+      {% else %}
+        <img src="{% static "accounts/user.png" %}" style="width:100%">
+        {% endif %}
+        <div class="w3-container">
+          <h3>{{ spark.spark_name }}</h3>
+          <p class="w3-opacity">CEO & Founder</p>
+          <p style="height: 100px;resize: vertical;overflow: auto;">{{ spark.spark_info }}</p>
+          <ul>
+              <li>{{ spark.interests }}</li>
+          </ul>
+          <p><button class="w3-button w3-light-grey w3-block" onclick="location.href='{% url 'sparks:profile' pk=spark.pk %}'">Profile</button>
+          <button class="w3-button w3-blue w3-block" onclick="document.getElementById('contactForm').style.display='block'">Contact</button>
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+</div>
+<!--
+  <div id="contactForm" class="w3-modal">
+    <div class="w3-modal-content w3-animate-top w3-card-4">
+      <header class="w3-container w3-teal w3-center w3-padding-32">
+        <span onclick="document.getElementById('contactForm').style.display='none'"
+       class="w3-button w3-teal w3-xlarge w3-display-topright">&times;</span>
+        <h2 class="w3-wide"><i class="fa fa-suitcase w3-margin-right"></i>CONNECT</h2>
+      </header>
+      <div class="w3-container">
+        <form method="post">
+        {% csrf_token %}
+        {{ form_two.as_p }}
+        <button class="w3-button w3-block w3-teal w3-padding-16 w3-section w3-right">SEND <i class="fa fa-check"></i></button>
+        <button class="w3-button w3-red w3-section" onclick="document.getElementById('contactForm').style.display='none'">Close <i class="fa fa-remove"></i></button>
+        <p class="w3-right">Need <a href="#" class="w3-text-blue">help?</a></p>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Contact -->
+  <div class="w3-center w3-padding-64" id="contact">
+    <span class="w3-xlarge w3-bottombar w3-border-dark-grey w3-padding-16">Contact Us</span>
+    <p>Please suggets ways to improve malnutrition in Our Country.</p>
+  </div>
+
+      <div class="w3-container">
+        <form method="post" class="w3-container">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="form-actions">
+                <button type="submit" class="w3-button w3-block w3-black">Send</button>
+            </div>
+      </form>
+      </div>
+<p><br></p>
+
+</div>
+
+<!-- Footer -->
+
+<footer class="w3-container w3-padding-32 w3-black w3-center">
+  <div style="width: 100%">
+  <img src="{% static 'accounts/logo.jpg' %}">
+  </div>
+  <a href="#" class="w3-button w3-white w3-margin"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+  <div class="w3-xlarge w3-section">
+    <i class="fa fa-facebook-official w3-hover-opacity"></i>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+  </div>
+ <!--  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+ --></footer>
+
+
+<script>
+function showMore(){
+    //removes the link
+    document.getElementById('link').parentElement.removeChild('link');
+    //shows the #more
+    document.getElementById('more').style.display = "block";
+}
+
+// Slideshow
+var slideIndex = 1;
+showDivs(slideIndex);
+
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
+
+function currentDiv(n) {
+  showDivs(slideIndex = n);
+}
+
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demodots");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+     dots[i].className = dots[i].className.replace(" w3-white", "");
+  }
+  x[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " w3-white";
+}
+</script>
+<script>
+var modal = document.getElementById('contactForm');
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+
+
+
+</script>
+
+</body>
+</html>

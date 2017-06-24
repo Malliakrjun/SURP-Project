@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+    background-image: url('{% static 'accounts/back5.jpg' %}');
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+</style>
+<script type="text/javascript">
+  function myFunction() {
+    var x = document.getElementById("navDemo");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+</script>
+<body>
+
+
+<div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+
+<div class="w3-top">
+  <div class="w3-bar w3-blue-gray w3-card-2 w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="{% url 'home:home' %}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
+    <a href="#plans" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">State of Malnutrition</a>
+    <a href="#about" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Sparks</a>
+    <div class="w3-dropdown-hover w3-hide-small">
+      <button class="w3-padding-large w3-button" title="More">TOPICS <i class="fa fa-caret-down"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'home:education' %}" class="w3-bar-item w3-button">EDUCATION</a>
+        <a href="{% url 'home:poverty' %}" class="w3-bar-item w3-button">POVERTY</a>
+        <a href="{% url 'home:social' %}" class="w3-bar-item w3-button">SOCIAL WELFARE</a>
+        <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button">HYGIENE</a>
+      </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More">{{ userpro.name }} <img src="{{ userpro.image.url }}" class="w3-circle" style="height:25px;width:25px" alt="{{ userpro.user }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button">Logout</a>
+        <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button">Profile</a>
+        <a href="{% url 'accounts:edit_profile' %}" class="w3-bar-item w3-button">Edit Profile</a>
+        <a href="{% url 'accounts:change_password' %}" class="w3-bar-item w3-button">Change Password</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More"><img src="{% static 'accounts/av1.jpg' %}" class="w3-circle" style="height:25px;width:25px" alt="{{ user.name }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:login' %}" class="w3-bar-item w3-button">Login</a>
+        <a href="{% url 'accounts:reset_password' %}" class="w3-bar-item w3-button">Forgot Password?</a>
+        <a href="{% url 'accounts:register' %}" class="w3-bar-item w3-button">Register</a>
+      </div>
+    </div>
+    {% endif %}
+    <a href="#contact" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Suggestions?</a>
+
+<!--
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Social Welfare</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Hygiene & Sanitation</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Social Welfare</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Hygiene & Sanitation</a> -->
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+    <a href="#plans" class="w3-bar-item w3-button w3-padding-large">State of Malnutrition</a>
+    <a href="#about" class="w3-bar-item w3-button w3-padding-large">Sparks</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-padding-large">Suggestions?</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-padding-large">EDUCATION</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-padding-large">POVERTY</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-padding-large">SOCIAL WELFARE</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-padding-large">HYGIENE & SANITATION</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button w3-padding-large">Logout</a>
+    <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button w3-padding-large">Profile</a>
+    <a href="{% url 'accounts:edit_profile' %}" class="w3-bar-item w3-button w3-padding-large">Edit Profile</a>
+    <a href="{% url 'accounts:change_password' %}" class="w3-bar-item w3-button w3-padding-large">Change Password</a>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="w3-bar-item w3-button w3-padding-large">Login</a>
+    <a href="{% url 'accounts:register' %}" class="w3-bar-item w3-button w3-padding-large">Register</a>
+    <a href="{% url 'accounts:reset_password' %}" class="w3-bar-item w3-button w3-padding-large">Forgot Password</a>
+    {% endif %}
+  </div>
+</div>
+
+
+
+  <div class="w3-display-middle w3-black w3-padding-large">
+    <h1 class="w3-jumbo w3-animate-top">Welcome</h1>
+    <hr class="w3-border-grey" style="margin:auto;width:40%">
+    <p class="w3-large w3-center">
+        <h1></h1>
+        <p>
+            You can log in here!
+        </p>
+        <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+        </form>
+    </p>
+  </div>
+  <!-- <div class="w3-display-bottomleft w3-padding-large">
+    SPARKS TO FIRE
+  </div> -->
+</div>
+
+</body>
+</html>
