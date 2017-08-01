@@ -9,7 +9,14 @@ from sparks.forms import ContactForm
 # Create your views here.
 
 def homepage(request):
-    return render(request,'accounts/home.html')
+    sparks=spark.objects.order_by('spark_name')
+    if request.user.is_authenticated:
+        x=request.user.is_superuser
+        if not x:
+            userpro=UserProfile.objects.get(user=request.user)
+        else:
+            userpro=User.objects.get(username='malli')
+    return render(request,'accounts/home.html',{'userpro':userpro})
 
 def malnutrition(request):
     sparks=spark.objects.order_by('spark_name')
@@ -103,4 +110,5 @@ def all_sparks(request):
             #sparks=spark.objects.filter()
             sparks=spark.objects.filter(spark_city__icontains=cit)
             sparks=sparks.filter(spark_locality__icontains=loc)
+            sparks=sparks.filter(interests__startswith=top)
     return render(request,"sparks/all_sparks.html",{'sparks': sparks , 'form':form})

@@ -1,20 +1,3 @@
-# from django.db import models
-# from django.utils import timezone
-
-# class Post(models.Model):
-#     """docstring for Post"""
-#     author=models.ForeignKey('auth.User')
-#     title=models.CharField(max_length=200)
-#     text=models.TextField()
-#     created_date=models.DateTimeField(default=timezone.now)
-#     published_date=models.DateTimeField(blank=True,null=True)
-#     def publish(self):
-#         self.published_date=timezone.now()
-#         self.save()
-
-#     def __str__(self):
-#         return self.title
-
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -30,16 +13,15 @@ class Post(models.Model):
         ('published', 'Published'),
     )
     title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250,unique_for_date='publish',null=True)
+    slug = models.SlugField(max_length=250,unique_for_date='created',null=True)
     author = models.ForeignKey(User,related_name='blog_posts')
     body = models.TextField()
-    publish = models.DateTimeField(default=timezone.now)
-    created = models.DateTimeField(auto_now_add=True,null=True)
+    created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True,null=True)
     status = models.CharField(max_length=10,choices=STATUS_CHOICES,default='draft')
     post_image=models.ImageField(upload_to='blog_images',blank=True)
     class Meta:
-        ordering = ('-publish',)
+        ordering = ('-created',)
     def __str__(self):
         return self.title
 
@@ -47,7 +29,7 @@ class Post(models.Model):
     published = PublishedManager() # Our custom manager.
 
     def get_absolute_url(self):
-        return reverse('blog:post_detail',args=[self.publish.year,self.publish.strftime('%m'),self.publish.strftime('%d'),self.slug])
+        return reverse('blog:post_detail',args=[self.created.year,self.created.strftime('%m'),self.created.strftime('%d'),self.slug])
 
 # class Images(models.Model):
 #     post = models.ForeignKey(Post, default=None)
@@ -55,14 +37,11 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
-    name = models.CharField(max_length=80)
-    email = models.EmailField()
+    author=models.CharField(max_length=100,default='')
     body = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(default=timezone.now)
     active = models.BooleanField(default=True)
     class Meta:
         ordering = ('created',)
-
     def __str__(self):
-        return 'Comment by {} on {}'.format(self.name, self.post)
+        return 'Comment by {} on {}'.format(self.author, self.post)

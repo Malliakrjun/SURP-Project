@@ -1,47 +1,261 @@
-{% extends "blog/base.html" %}
-{% block title %}My Blog{% endblock %}
-{% block content %}
-<div>
-      <h1>MY BLOG</h1>
-</div>
-{% for post in posts %}
- <h2>
- <a href="{{ post.get_absolute_url }}">
- {{ post.title }}
- </a>
- </h2>
- <p class="date">
- Published {{ post.publish }} by {{ post.author }}
- </p>
- {{ post.body|truncatewords:30|linebreaks }}
- {% endfor %}
+{% load blog_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<title>Citizens's View-Sparks To Fire</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey">
+<div class="w3-top">
+  <div class="w3-bar w3-indigo w3-card-2 w3-left-align w3-large">
+    <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="{% url 'home:home' %}" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
+    <div class="w3-dropdown-hover w3-hide-small">
+      <button class="w3-padding-large w3-button" title="More">TOPICS <i class="fa fa-caret-down"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'home:malnutrition' %}" class="w3-bar-item w3-button">MALNUTRITION</a>
+        <a href="{% url 'home:education' %}" class="w3-bar-item w3-button">EDUCATION</a>
+        <a href="{% url 'home:poverty' %}" class="w3-bar-item w3-button">POVERTY</a>
+        <a href="{% url 'home:social' %}" class="w3-bar-item w3-button">SOCIAL WELFARE</a>
+        <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button">HYGIENE</a>
+      </div>
+    </div>
 
-<div class="pagination">
- <span class="step-links">
- {% if page.has_previous %}
- <a href="?page={{ page.previous_page_number }}">Previous</a>
- {% endif %}
- <span class="current">
- Page {{ page.number }} of {{ page.paginator.num_pages }}.
- </span>
- {% if page.has_next %}
- <a href="?page={{ page.next_page_number }}">Next</a>
- {% endif %}
- </span>
-</div>
-{% endblock %}
+    {% if user.is_authenticated %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More">{{ userpro.name }} <img src="{{ userpro.image.url }}" class="w3-circle" style="height:25px;width:25px" alt="{{ userpro.user }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button">Logout</a>
+        <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button">Profile</a>
+        <a href="{% url 'accounts:edit_profile' %}" class="w3-bar-item w3-button">Edit Profile</a>
+        <a href="{% url 'accounts:change_password' %}" class="w3-bar-item w3-button">Change Password</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More"><img src="{% static 'accounts/av1.jpg' %}" class="w3-circle" style="height:25px;width:25px" alt="{{ user.name }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:login' %}" class="w3-bar-item w3-button">Login</a>
+        <a href="{% url 'accounts:reset_password' %}" class="w3-bar-item w3-button">Forgot Password?</a>
+        <a href="{% url 'accounts:register' %}" class="w3-bar-item w3-button">Register</a>
+      </div>
+    </div>
+    {% endif %}
 
 <!--
-{% block content_change %}
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Social Welfare</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Hygiene & Sanitation</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Social Welfare</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Hygiene & Sanitation</a> -->
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
+    <a href="#about" class="w3-bar-item w3-button w3-padding-large">Sparks</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-padding-large">Suggestions?</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-padding-large">EDUCATION</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-padding-large">POVERTY</a>
+    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-padding-large">SOCIAL WELFARE</a>
+    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-padding-large">HYGIENE & SANITATION</a>
+    {% if user.is_authenticated %}
+    <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button w3-padding-large">Logout</a>
+    <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button w3-padding-large">Profile</a>
+    <a href="{% url 'accounts:edit_profile' %}" class="w3-bar-item w3-button w3-padding-large">Edit Profile</a>
+    <a href="{% url 'accounts:change_password' %}" class="w3-bar-item w3-button w3-padding-large">Change Password</a>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="w3-bar-item w3-button w3-padding-large">Login</a>
+    <a href="{% url 'accounts:register' %}" class="w3-bar-item w3-button w3-padding-large">Register</a>
+    <a href="{% url 'accounts:reset_password' %}" class="w3-bar-item w3-button w3-padding-large">Forgot Password</a>
+    {% endif %}
+  </div>
+</div>
+
+<br><br>
+
+<!-- w3-content defines a container for fixed size centered content,
+and is wrapped around the whole page content, except for the footer in this example -->
+<div class="w3-content" style="max-width:1400px">
+
+<!-- Header -->
+<header class="w3-container w3-center w3-padding-32 w3-indigo">
+  <h1><b>CITIZEN's VIEW</b></h1>
+  <p>This is where the users opinions are!!! </p>
+</header>
+<!-- Grid -->
+<div class="w3-row">
+
+<!-- Blog entries -->
+<div class="w3-col l8 s12">
 {% for post in posts %}
-    <div class="post">
-        <div class="date">
-            {{ post.published_date }}
-        </div>
-        <h1><a href="{% url 'blog:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-        <h6>{{ post.author }}</h6>
-        <h6>{{ post.author }}</h6>
-        <p>{{ post.text|linebreaksbr }}</p>
+  <!-- Blog entry -->
+  <div class="w3-card-4 w3-margin w3-white">
+    {% if post.post_image %}
+    <img src="{{ post.post_image.url }}" alt="Nature" style="width:100%">
+    {% endif %}
+ <div class="w3-container">
+ <h2>
+ <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+ </h2>
+ <p class="date">
+ Published {{ post.created }} by {{ post.author }}
+ </p>
+ <div class="w3-container">
+ {{ post.body|truncatewords:100|linebreaks }}
+ </div>
+<div class="w3-row">
+    <div class="w3-col m4 s4">
+    <p><a class="w3-button w3-padding-large w3-white w3-border" href="{{ post.get_absolute_url }}"><b>READ MORE &raquo;</b></a></p>
     </div>
-{% endfor %}
-{% endblock %} -->
+    <div class="w3-col m4 s4">
+    <p><a class="w3-button w3-padding-large w3-white w3-border" href="#"> &nbsp;Like</a></p>
+    </div>
+
+      <p class="w3-right"><button class="w3-button w3-black" onclick="myFunction('{{ post.pk }}')" id="myBtn"><b>Comments &nbsp;</b> <span class="w3-tag w3-white">{{ post.comments.count }}</span></button></p>
+      </div>
+<div id="{{ post.pk }}" style="display:none">
+      {% for comment in post.comments.all %}
+      <div class="w3-row w3-margin-bottom">
+        <hr>
+          <div class="w3-col l2 m3">
+            <img src="{% get_commenter comment.author %}" alt="user" style="width:90px;">
+          </div>
+          <div class="w3-col l10 m9">
+            <h4>{{ comment.author }} <span class="w3-opacity w3-medium">{{ comment.created }}</span></h4>
+            <p>{{ comment.body }}</p>
+          </div>
+      </div>
+
+      {% endfor %}
+</div>
+</div>
+<div class="w3-container">
+
+</div>
+</div>
+<hr>
+ {% endfor %}
+<!-- END BLOG ENTRIES -->
+</div>
+
+<!-- Introduction menu -->
+<div class="w3-col l4">
+
+  <!-- Posts -->
+  <div class="w3-card-2 w3-margin">
+    <div class="w3-container w3-padding">
+      <h4>Popular Posts</h4>
+    </div>
+    <ul class="w3-ul w3-hoverable w3-white">
+      <li class="w3-padding-16">
+        <img src="/w3images/workshop.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Lorem</span><br>
+        <span>Sed mattis nunc</span>
+      </li>
+      <li class="w3-padding-16">
+        <img src="/w3images/gondol.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Ipsum</span><br>
+        <span>Praes tinci sed</span>
+      </li>
+      <li class="w3-padding-16">
+        <img src="/w3images/skies.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Dorum</span><br>
+        <span>Ultricies congue</span>
+      </li>
+      <li class="w3-padding-16 w3-hide-medium w3-hide-small">
+        <img src="/w3images/rock.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Mingsum</span><br>
+        <span>Lorem ipsum dipsum</span>
+      </li>
+    </ul>
+  </div>
+  <hr>
+
+  <!-- Labels / tags -->
+  <div class="w3-card-2 w3-margin">
+    <div class="w3-container w3-padding">
+      <h4>Tags</h4>
+    </div>
+    <div class="w3-container w3-white">
+    <p><span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">London</span>
+      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">IKEA</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">NORWAY</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">DIY</span>
+      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Baby</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Family</span>
+      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">News</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Clothing</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Shopping</span>
+      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Sports</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Games</span>
+    </p>
+    </div>
+  </div>
+  <hr>
+
+  <!-- About Card -->
+  <div class="w3-card-2 w3-margin w3-margin-top">
+  <div class="w3-container w3-padding-16">
+  <img src="{% static "accounts/logo.jpg" %}" style="width:100%">
+  </div>
+    <div class="w3-container w3-white">
+      <h4><b>Sparks To Fire</b></h4>
+      <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a interest of lorem ipsum and mauris neque quam blog. I want to share my world with you.</p>
+    </div>
+  </div>
+
+<!-- END Introduction Menu -->
+</div>
+
+<!-- END GRID -->
+</div><br>
+
+<!-- END w3-content -->
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-dark-grey w3-padding-32 w3-margin-top">
+
+<div class="w3-bar w3-border w3-round">
+  {% if posts.has_previous %}
+  <a href="?page={{ posts.previous_page_number }}" class="w3-button">&#10094; Previous</a>
+  {% endif %}
+  {% for pg in page_range %}
+    {% if posts.number == pg %}
+        <a href="?page={{ pg }}" class="w3-button w3-center">{{ pg }}</a>
+    {% else %}
+        <a href="?page={{ pg }}" class="w3-button w3-center">{{ pg }}</a>
+    {% endif %}
+  {% endfor %}
+  {% if posts.has_next %}
+  <a href="?page={{ posts.next_page_number }}" class="w3-button w3-right">Next &#10095;</a>
+  {% endif %}
+</div>
+<p class="w3-center">
+Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+</p>
+</div>
+
+<footer class="w3-container w3-theme-d5">
+  <p>SPARKS TO FIRE</a></p>
+</footer>
+
+
+</footer>
+<script>
+// Toggle between hiding and showing blog replies/comments
+document.getElementById("myBtn").click();
+function myFunction(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else {
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+
+function likeFunction(x) {
+    x.style.fontWeight = "bold";
+    x.innerHTML = "&#10003; Liked";
+}
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.contrib.auth.views import login,logout,password_reset,password_reset_done,password_reset_confirm,password_reset_complete
+from django.contrib.auth.views import logout,password_reset,password_reset_done,password_reset_confirm,password_reset_complete
 from django.conf import settings
 from django.conf.urls.static import static
 from .forms import LoginForm
@@ -14,6 +14,7 @@ urlpatterns=[
     url(r'^profile/$',views.view_profile,name='view_profile'),
     url(r'^profile/edit/$',views.edit_profile,name='edit_profile'),
     url(r'^change-password/$',views.change_password,name='change_password'),
+    url(r'^profile/post/$',views.post_profile,name='post_profile'),
 
     url(r'^reset-password/$',password_reset,{'template_name':
         'accounts/reset_password.html','post_reset_redirect':

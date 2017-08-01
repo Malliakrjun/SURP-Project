@@ -1,3 +1,4 @@
+{% load blog_tags %}
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -15,7 +16,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
 <!-- Navbar -->
 <div class="w3-top">
- <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+ <div class="w3-bar w3-theme-d2 w3-left-align w3-large w3-blue-gray">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="{% url 'home:home' %}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>Sparks To Fire</a>
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
@@ -68,7 +69,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
          <hr>
          <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> {{ userpro.description }}</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> {{ userpro.locality }}, {{ userpro.city }}</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i>Birth-date</p>
         </div>
         </div>
       </div>
@@ -77,15 +78,32 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <!-- Accordion -->
       <div class="w3-card-2 w3-round">
         <div class="w3-white">
-          <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups</button>
+          <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Groups</button>
           <div id="Demo1" class="w3-hide w3-container">
             <p>Some text..</p>
           </div>
           <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events</button>
           <div id="Demo2" class="w3-hide w3-container">
-            <p>Some other text..</p>
+            {% for event in events_attending %}
+          {% if event.incomplete %}
+
+          <div class="w3-container">
+          {% if event.image %}
+           <p class="w3-center"><img src="{{ event.image.url }}" width="100%" style="width:100%" alt="Image"></p>
+           {% else %}
+           <p class="w3-center"><img src="{% static 'accounts/back.jpg' %}" width="100%" style="width:100%" alt="Image"></p>
+          {% endif %}
+          <p><strong>{{ event.event_title }}</strong></p>
+          <p>{{ event.event_time }}</p>
+              <button type="submit" class="w3-row w3-opacity w3-half w3-button w3-block w3-green w3-section" title="Going" onclick="location.href='{% url 'events:attending' pk=request.user.pk pk2=event.pk %}'"><i class="fa fa-check"></i></button>
+              <button class="w3-row w3-opacity w3-half w3-button w3-block w3-red w3-section" title="Decline" onclick="this.parentElement.style.display='none'"><i class="fa fa-remove"></i></button>
           </div>
-          <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
+
+          {% endif %}
+          <br>
+          {% endfor %}
+          </div>
+          <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-photo fa-fw w3-margin-right"></i> My Photos</button>
           <div id="Demo3" class="w3-hide w3-container">
          <div class="w3-row-padding">
          <br>
@@ -139,8 +157,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
         <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
           <i class="fa fa-remove"></i>
         </span>
-        <p><strong>Hey!</strong></p>
-        <p>People are looking at your profile. Find out who.</p>
+        <p><strong>Sparks To Fire</strong></p>
+        <p>Sparks to fire is an initiative to bring together all the individual sparks to spread a massive fire. By fire we mean, fight against all the social evils together. Each of us is just a spark but collectively we can do anything for the betterment of the society as a whole. Together We Can.</p>
       </div>
 
     <!-- End Left Column -->
@@ -150,21 +168,32 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
     <div class="w3-col m7">
 
       <div class="w3-row-padding">
-        <div class="w3-col m12">
+        <div class="w3-col m12 s12">
           <div class="w3-card-2 w3-round w3-white">
+          <button onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-right">
+          <i class="fa fa-remove"></i>
+          </button>
             <div class="w3-container w3-padding">
               <h3 class="w3-opacity"><strong>CITIZEN REPORTER</strong></h3>
-              <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p>
-              <button type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Post</button>
+              <!-- <p contenteditable="true" class="w3-border w3-padding">Status: Feeling Blue</p> -->
+              <div class="w3-container">
+                <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+              <button type="submit" class="w3-button w3-theme"><i class="fa fa-pencil"></i> &nbsp;Post</button>
+                <p><br></p>
+              </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <div>
       {% for post in posts %}
       {% ifequal post.status 'published' %}
       <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
         <!-- <img src="/w3images/avatar6.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px"> -->
-        {% if userpro.back_image %}
+        {% if userpro.image %}
          <img src="{{ user.userprofile.image.url }}" class="w3-left w3-circle w3-margin-right" style="width:60px">
          {% else %}
          <img src="{% static 'accounts/av1.jpg' %}" class="w3-left w3-circle w3-margin-right" style="width:60px">
@@ -173,15 +202,33 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
         <h4>{{ post.title }}-{{ userpro.first_name }} {{ userpro.last_name }}</h4><br>
         <hr class="w3-clear">
         <p>Have you seen this?</p>
-        {% if userpro.back_image %}
-         <img src="{{ post.post_image.url }}" class="w3-left w3-circle w3-margin-right" style="width:100%">
-         {% endif %}
-        <p>{{ post.body }}</p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> &nbsp;Like</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> &nbsp;Comment</button>
+        <div class="w3-padding-16">
+        {% if post.post_image %}
+         <img src="{{ post.post_image.url }}" class="w3-left w3-margin-bottom" style="width:100%">
+        {% endif %}
+        <p>{{ post.body|truncatewords:30 }}</p>
+        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-green"><i class="fa fa-thumbs-up"></i> &nbsp;Upvote</button>
+        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-blue" onclick="myFunction('{{ post.pk }}')"><i class="fa fa-comment"></i> &nbsp;Comments</button>
+        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-blue" onclick="location.href='{{ post.get_absolute_url }}'"> &nbsp;Read More..</button>
+        <div id="{{ post.pk }}" style="display:none">
+      {% for comment in post.comments.all %}
+      <div class="w3-row">
+      <hr>
+          <div class="w3-col l2 m3">
+            <img src="{% get_commenter comment.author %}" alt="user" class="w3-left w3-circle w3-margin-right" style="width:60px;">
+          </div>
+          <div class="w3-col l10 m9">
+            <h4>{{ comment.author }} <span class="w3-opacity w3-medium">{{ comment.created }}</span></h4>
+            <p>{{ comment.body }}</p>
+          </div>
       </div>
+      {% endfor %}
+</div>
+</div>
+</div>
       {% endifequal %}
       {% endfor %}
+</div>
       <!-- <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
         <img src="/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">1 min</span>
@@ -217,31 +264,28 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
     <!-- Right Column -->
     <div class="w3-col m2">
       <div class="w3-card-2 w3-round w3-white w3-center">
+      <button onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-right">
+          <i class="fa fa-remove"></i>
+          </button>
         <div class="w3-container">
           <p>Upcoming Events:</p>
           {% for event in events %}
           {% if event.incomplete %}
-          <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
-          <i class="fa fa-remove"></i>
-          </span>
+
           <div class="w3-container">
           {% if event.image %}
            <p class="w3-center"><img src="{{ event.image.url }}" width="100%" style="width:100%" alt="Image"></p>
            {% else %}
            <p class="w3-center"><img src="{% static 'accounts/back.jpg' %}" width="100%" style="width:100%" alt="Image"></p>
           {% endif %}
-          <p><strong>{{ event.event_title }}</strong></p>
+          <p>
+          <a class="w3-bar-item w3-button w3-left w3-pale-green" href="javascript:void(0)"><i class="fa fa-caret-left"></i></a>
+          <strong>{{ event.event_title }}</strong>
+          <a class="w3-bar-item w3-button w3-right w3-pale-green" href="javascript:void(0)"><i class="fa fa-caret-right"></i></a></p>
           <p>{{ event.event_time }}</p>
-          <div class="w3-row w3-opacity">
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-green w3-section" title="Going" onclick="location.href='{% url 'events:attending' pk=request.user.pk pk2=event.pk %}'"><i class="fa fa-check"></i></button>
-            </div>
-            <div class="w3-half">
-              <button class="w3-button w3-block w3-red w3-section" title="Decline" onclick="this.parentElement.style.display='none'"><i class="fa fa-remove"></i></button>
-            </div>
+              <button type="submit" class="w3-row w3-opacity w3-half w3-button w3-block w3-green w3-section" title="Going" onclick="location.href='{% url 'events:attending' pk=request.user.pk pk2=event.pk %}'"><i class="fa fa-check"></i></button>
+              <button class="w3-row w3-opacity w3-half w3-button w3-block w3-red w3-section" title="Decline" onclick="this.parentElement.style.display='none'"><i class="fa fa-remove"></i></button>
           </div>
-          </div>
-
           {% endif %}
           <br>
           {% endfor %}
@@ -267,7 +311,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <br>
 
       <div class="w3-card-2 w3-round w3-white w3-padding-16 w3-center">
-        <p>ADS</p>
+        <p>Something</p>
       </div>
       <br>
 
@@ -287,11 +331,29 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 
 <!-- Footer -->
 <footer class="w3-container w3-theme-d3 w3-padding-16">
-  <h5>Footer</h5>
+<div class="w3-bar w3-border w3-round">
+  {% if posts.has_previous %}
+  <a href="?page={{ posts.previous_page_number }}" class="w3-button">&#10094; Previous</a>
+  {% endif %}
+  {% for pg in page_range %}
+    {% if posts.number == pg %}
+        <a href="?page={{ pg }}" class="w3-button w3-center">{{ pg }}</a>
+    {% else %}
+        <a href="?page={{ pg }}" class="w3-button w3-center">{{ pg }}</a>
+    {% endif %}
+  {% endfor %}
+  {% if posts.has_next %}
+  <a href="?page={{ posts.next_page_number }}" class="w3-button w3-right">Next &#10095;</a>
+  {% endif %}
+</div>
+<p class="w3-center">
+Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+</p>
+</div>
 </footer>
 
 <footer class="w3-container w3-theme-d5">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <p>SPARKS TO FIRE</a></p>
 </footer>
 
 <script>

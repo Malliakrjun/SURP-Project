@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 # import datetime
 # Create your models here.
@@ -17,3 +18,14 @@ class event(models.Model):
 
     def __str__(self):
         return self.event_title
+
+class Event_Comment(models.Model):
+    event = models.ForeignKey(event, related_name='comments')
+    author=models.CharField(max_length=100,default='')
+    body = models.TextField()
+    created = models.DateTimeField(default=timezone.now)
+    active = models.BooleanField(default=True)
+    class Meta:
+        ordering = ('created',)
+    def __str__(self):
+        return 'Comment by {} on {}'.format(self.author, self.post)

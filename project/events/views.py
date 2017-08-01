@@ -29,3 +29,16 @@ def attend(request,pk,pk2):
     eventa = get_object_or_404(event, pk=pk2)
     eventa.interested_users.add(user)
     return render(request,'sparks/success.html')
+
+def not_attending(request,pk,pk2):
+    user = get_object_or_404(User, pk=pk)
+    eventa = get_object_or_404(event, pk=pk2)
+    eventa.interested_users.remove(user)
+    return render(request,'sparks/success.html')
+
+def events(request):
+    events=event.objects.all()
+    user=request.user
+    userevents=user.event_set.all()
+
+    return render(request,'events/event_display.html',{'events':events,'userevents':userevents})

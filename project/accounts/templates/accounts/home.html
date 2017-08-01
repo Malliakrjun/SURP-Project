@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Sparks To Fire</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{% static 'accounts/home.css' %}">
@@ -26,17 +26,28 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     <a href="{% url 'home:poverty' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Poverty</a>
     <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Social Welfare</a>
     <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Hygiene & Sanitation</a>
-  </div>
+  {% if user.is_authenticated %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More">{{ userpro.name }} <img src="{{ userpro.image.url }}" class="w3-circle" style="height:25px;width:25px" alt="{{ userpro.user }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button">Logout</a>
+        <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button">Profile</a>
+        <a href="{% url 'accounts:edit_profile' %}" class="w3-bar-item w3-button">Edit Profile</a>
+        <a href="{% url 'accounts:change_password' %}" class="w3-bar-item w3-button">Change Password</a>
+      </div>
+    </div>
+    {% else %}
+    <div class="w3-dropdown-hover w3-hide-small w3-right">
+      <button class="w3-padding-large w3-button" title="More"><img src="{% static 'accounts/av1.jpg' %}" class="w3-circle" style="height:25px;width:25px" alt="{{ user.name }}"></i></button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
+        <a href="{% url 'accounts:login' %}" class="w3-bar-item w3-button">Login</a>
+        <a href="{% url 'accounts:reset_password' %}" class="w3-bar-item w3-button">Forgot Password?</a>
+        <a href="{% url 'accounts:register' %}" class="w3-bar-item w3-button">Register</a>
+      </div>
+    </div>
+    {% endif %}
+  </div></div>
 
-  <!-- Navbar on small screens -->
-  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
-    <a href="{% url 'home:malnutrition' %}" class="w3-bar-item w3-button w3-padding-large">Malnutrition</a>
-    <a href="{% url 'home:education' %}" class="w3-bar-item w3-button w3-padding-large">Education</a>
-    <a href="{% url 'home:poverty' %}" class="w3-bar-item w3-button w3-padding-large">Poverty</a>
-    <a href="{% url 'home:social' %}" class="w3-bar-item w3-button w3-padding-large">Social Welfare</a>
-    <a href="{% url 'home:hygiene' %}" class="w3-bar-item w3-button w3-padding-large">Hygiene & Sanitation</a>
-  </div>
-</div>
 
 <!-- Header -->
 <header class="w3-container w3-red w3-center" style="padding:128px 16px">

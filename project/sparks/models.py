@@ -52,7 +52,7 @@ class spark(models.Model):
         ('Hygiene and Sanitation', 'Hygiene and Sanitation'),
     )
     interests = models.CharField(
-        max_length=25,
+        max_length=30,
         choices=interests_choices,
         default='All'
     )

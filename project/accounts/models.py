@@ -18,6 +18,19 @@ class UserProfile(models.Model):
     phone=models.IntegerField(default=0)
     image=models.ImageField(upload_to='profile_image',blank=True)
     back_image=models.ImageField(upload_to='back_image',blank=True)
+    interests_choices = (
+        ('All','All'),
+        ('Malnutrition', 'Malnutrition'),
+        ('Education', 'Education'),
+        ('Poverty', 'Poverty'),
+        ('Social Welfare', 'Social Welfare'),
+        ('Hygiene and Sanitation', 'Hygiene and Sanitation'),
+    )
+    user_interests = models.CharField(
+        max_length=25,
+        choices=interests_choices,
+        default='All'
+    )
     # activation_key = models.CharField(max_length=40,default='')
     # key_expires = models.DateTimeField(default=timezone.now)
 

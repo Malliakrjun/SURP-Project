@@ -398,11 +398,12 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
         <div class="w3-container">
           <h3>{{ spark.spark_name }}</h3>
           <p class="w3-opacity">CEO & Founder</p>
-          <p style="height: 100px;resize: vertical;overflow: auto;">{{ spark.spark_info }}</p>
+          <!-- <p style="height: 100px;resize: vertical;overflow: auto;">{{ spark.spark_info }}</p> -->
+          <p>{{ spark.spark_info|truncatewords:10 }}</p>
           <ul>
               <li>{{ spark.interests }}</li>
           </ul>
-          <p><button class="w3-button w3-light-grey w3-block" onclick="location.href='{% url 'sparks:profile' pk=spark.pk %}'">Profile</button>
+          <p><a class="w3-button w3-light-grey w3-block" href="{% url 'sparks:profile' pk=spark.pk %}">Profile</a>
           <button class="w3-button w3-blue w3-block" onclick="document.getElementById('contactForm').style.display='block'">Contact</button>
           </p>
         </div>
