@@ -11,21 +11,17 @@ from sparks.forms import ContactForm
 def homepage(request):
     sparks=spark.objects.order_by('spark_name')
     if request.user.is_authenticated:
-        x=request.user.is_superuser
-        if not x:
-            userpro=UserProfile.objects.get(user=request.user)
-        else:
-            userpro=User.objects.get(username='malli')
-    return render(request,'accounts/home.html',{'userpro':userpro})
+        userpro=UserProfile.objects.get(user=request.user)
+        return render(request,'accounts/home.html',{'userpro':userpro})
+    else:
+        return render(request,'accounts/home.html',)
 
 def malnutrition(request):
     sparks=spark.objects.order_by('spark_name')
     if request.user.is_authenticated:
-        x=request.user.is_superuser
-        if not x:
-            userpro=UserProfile.objects.get(user=request.user)
-        else:
-            userpro=User.objects.get(username='malli')
+        userpro=UserProfile.objects.get(user=request.user)
+    else:
+        userpro=None
 
 
     if request.method == 'GET':

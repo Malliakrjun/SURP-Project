@@ -17,12 +17,12 @@ from django.template.defaultfilters import slugify
 
 # Create your views here.
 def home(request):
-    x=request.user.is_superuser
-    if not x:
+    x=request.user.is_authenticated
+    if x:
         userpro=UserProfile.objects.get(user=request.user)
+        return render(request,'accounts\home.html',{'userpro':userpro,})
     else:
-        userpro=User.objects.get(username='malli')
-    return render(request,'accounts\home.html',{'userpro':userpro,})
+        return render(request,'accounts\home.html',)
 
 
 def register(request):

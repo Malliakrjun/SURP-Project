@@ -149,8 +149,8 @@ LOGIN_URL='/account/login/'
 # EMAIL_PORT = 1025
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'pvnmallikarjun@gmail.com'
-EMAIL_HOST_PASSWORD = '12072000'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
