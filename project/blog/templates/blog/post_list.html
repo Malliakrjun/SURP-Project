@@ -28,7 +28,8 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
     {% if user.is_authenticated %}
     <div class="w3-dropdown-hover w3-hide-small w3-right">
-      <button class="w3-padding-large w3-button" title="More">{{ userpro.name }} <img src="{{ userpro.image.url }}" class="w3-circle" style="height:25px;width:25px" alt="{{ userpro.user }}"></i></button>
+      <button class="w3-padding-large w3-button">{{ userpro.name }} <img src="{{ userpro.image.url }}" class="w3-circle" style="height:25px;width:25px" alt="{{ userpro.user }}"></i></button>
+      <!-- <button class="w3-padding-large w3-button" title="More">{{ userpro.name }} <img src="{{ userpro.image.url }}" class="w3-circle" style="height:25px;width:25px" alt="{{ userpro.user }}"></i></button> -->
       <div class="w3-dropdown-content w3-bar-block w3-card-4" style="right:0">
         <a href="{% url 'accounts:logout' %}" class="w3-bar-item w3-button">Logout</a>
         <a href="{% url 'accounts:view_profile' %}" class="w3-bar-item w3-button">Profile</a>
@@ -112,7 +113,7 @@ and is wrapped around the whole page content, except for the footer in this exam
     <p><a class="w3-button w3-padding-large w3-white w3-border" href="{{ post.get_absolute_url }}"><b>READ MORE &raquo;</b></a></p>
     </div>
     <div class="w3-col m4 s4">
-    <p><a class="w3-button w3-padding-large w3-white w3-border" href="#"> &nbsp;Like</a></p>
+    <p><a class="w3-button w3-padding-large w3-white w3-border" href="#"> &nbsp;Like</a>{{ post.likes.count }}</p>
     </div>
 
       <p class="w3-right"><button class="w3-button w3-black" onclick="myFunction('{{ post.pk }}')" id="myBtn"><b>Comments &nbsp;</b> <span class="w3-tag w3-white">{{ post.comments.count }}</span></button></p>
@@ -147,7 +148,7 @@ and is wrapped around the whole page content, except for the footer in this exam
 
   <!-- Posts -->
   <div class="w3-card-2 w3-margin">
-    <div class="w3-container w3-padding">
+    <div class="w3-container w3-padding w3-khaki">
       <h4>Popular Posts</h4>
     </div>
     <ul class="w3-ul w3-hoverable w3-white">
@@ -181,15 +182,74 @@ and is wrapped around the whole page content, except for the footer in this exam
       <h4>Tags</h4>
     </div>
     <div class="w3-container w3-white">
-    <p><span class="w3-tag w3-black w3-margin-bottom">Travel</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">New York</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">London</span>
-      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">IKEA</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">NORWAY</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">DIY</span>
-      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Baby</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Family</span>
+    <p><span class="w3-tag w3-black w3-margin-bottom">Malnutrition</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Education</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Hygiene</span>
+      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Sanitaion</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Poverty</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Social Welfare</span>
+      <!-- <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Ideas</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Baby</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Family</span>
       <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">News</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Clothing</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Shopping</span>
-      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Sports</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Games</span>
+      <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Sports</span> <span class="w3-tag w3-light-grey w3-small w3-margin-bottom">Games</span> -->
     </p>
     </div>
   </div>
   <hr>
+{% if user.is_authenticated %}
+<div class="w3-card-2 w3-margin">
+  <div class="w3-container w3-padding w3-red">
+      <h4>Your Latest Posts</h4>
+    </div>
+    <ul class="w3-ul w3-hoverable w3-white">
+      {% for post in latest_user_posts %}
+      <li class="w3-padding-16">
+      {% if post.post_image %}
+        <img src="{{ post.post_image.url }}" alt="Image" class="w3-left w3-margin-right" style="width:60px">
+        {% endif %}
+        <a class="w3-large w3-button w3-grey" href="{{ post.get_absolute_url }}">{{ post.title }}</a><br>
+        <span>{{ post.body|truncatewords:20|linebreaks }}</span>
+      </li>
+      <!-- <li class="w3-padding-16">
+        <img src="/w3images/gondol.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Ipsum</span><br>
+        <span>Praes tinci sed</span>
+      </li>
+      <li class="w3-padding-16">
+        <img src="/w3images/skies.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Dorum</span><br>
+        <span>Ultricies congue</span>
+      </li>
+      <li class="w3-padding-16 w3-hide-medium w3-hide-small">
+        <img src="/w3images/rock.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">Mingsum</span><br>
+        <span>Lorem ipsum dipsum</span>
+      </li> -->
+      {% endfor %}
+    </ul>
+    <div class="w3-container w3-padding w3-red">
+      <a class="w3-padding-large w3-button w3-hover-red" href="" style="width: 100%">SEE MORE</a>
+    </div>
+  </div>
+  <hr>
+
+<div class="w3-card-2 w3-margin">
+  <div class="w3-container w3-padding w3-green">
+      <h4>Your Drafts</h4>
+    </div>
+    <ul class="w3-ul w3-hoverable w3-white">
+      {% for post in latest_user_drafts %}
+      <li class="w3-padding-16">
+      {% if post.post_image %}
+        <img src="{{ post.post_image.url }}" alt="Image" class="w3-left w3-margin-right" style="width:60px">
+        {% endif %}
+        <a class="w3-large w3-button w3-grey" href="{{ post.get_absolute_url }}">{{ post.title }}</a><br>
+        <span>{{ post.body|truncatewords:20|linebreaks }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    <div class="w3-container w3-padding w3-green">
+      <a class="w3-padding-large w3-button w3-hover-green" href="" style="width: 100%">SEE MORE</a>
+    </div>
+  </div>
+  <hr>
+
+  {% endif %}
 
   <!-- About Card -->
   <div class="w3-card-2 w3-margin w3-margin-top">
@@ -198,7 +258,7 @@ and is wrapped around the whole page content, except for the footer in this exam
   </div>
     <div class="w3-container w3-white">
       <h4><b>Sparks To Fire</b></h4>
-      <p>Just me, myself and I, exploring the universe of uknownment. I have a heart of love and a interest of lorem ipsum and mauris neque quam blog. I want to share my world with you.</p>
+      <p>Sparks to fire is an initiative to bring together all the individual sparks to spread a massive fire. By fire we mean, fight against all the social evils together. Each of us is just a spark but collectively we can do anything for the betterment of the society as a whole. Together We Can.</p>
     </div>
   </div>
 
@@ -235,7 +295,9 @@ Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
 </div>
 
 <footer class="w3-container w3-theme-d5">
-  <p>SPARKS TO FIRE</a></p>
+  <p>SPARKS TO FIRE</a>
+  <!-- <div class="w3-spin"><img src="{% static "accounts/sparks.jpg" %}" style="width: 10px"></div> -->
+  </p>
 </footer>
 
 

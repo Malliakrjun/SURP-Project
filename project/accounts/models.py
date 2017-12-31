@@ -31,6 +31,12 @@ class UserProfile(models.Model):
         choices=interests_choices,
         default='All'
     )
+    GENDER_CHOICES = (
+        ('N','None'),
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
+    gender = models.CharField(max_length=1,choices=GENDER_CHOICES,default='N')
     # activation_key = models.CharField(max_length=40,default='')
     # key_expires = models.DateTimeField(default=timezone.now)
 

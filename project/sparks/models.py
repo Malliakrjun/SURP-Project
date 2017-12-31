@@ -1,5 +1,5 @@
 from django.db import models
-
+from accounts.models import UserProfile
 # Create your models here.
 
 class Tag(models.Model):
@@ -13,10 +13,11 @@ class Tag(models.Model):
         return self.name
 
 class spark(models.Model):
-    spark_name=models.CharField(max_length=100,blank=False)
-    spark_locality=models.CharField(max_length=100,default='')
-    spark_city=models.CharField(max_length=100,default='')
-    spark_mail=models.EmailField()
+    #spark_name=models.CharField(max_length=100,blank=False)
+    spark_user=models.OneToOneField(UserProfile, null=True)
+    #spark_locality=models.CharField(max_length=100,default='')
+    #spark_city=models.CharField(max_length=100,default='')
+    #spark_mail=models.EmailField()
     spark_info=models.TextField('description',blank=False)
     spark_organization=models.CharField(max_length=200,blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
@@ -41,27 +42,27 @@ class spark(models.Model):
     idea_4=models.TextField(blank=True)
     idea_5=models.TextField(blank=True)
 
-    image=models.ImageField(upload_to='sparks',blank=True)
+    #image=models.ImageField(upload_to='sparks',blank=True)
 
-    interests_choices = (
-        ('All','All'),
-        ('Malnutrition', 'Malnutrition'),
-        ('Education', 'Education'),
-        ('Poverty', 'Poverty'),
-        ('Social Welfare', 'Social Welfare'),
-        ('Hygiene and Sanitation', 'Hygiene and Sanitation'),
-    )
-    interests = models.CharField(
-        max_length=30,
-        choices=interests_choices,
-        default='All'
-    )
-    GENDER_CHOICES = (
-        ('N','None'),
-        ('M', 'Male'),
-        ('F', 'Female'),
-    )
-    gender = models.CharField(max_length=1,choices=GENDER_CHOICES,default='N')
+    # interests_choices = (
+    #     ('All','All'),
+    #     ('Malnutrition', 'Malnutrition'),
+    #     ('Education', 'Education'),
+    #     ('Poverty', 'Poverty'),
+    #     ('Social Welfare', 'Social Welfare'),
+    #     ('Hygiene and Sanitation', 'Hygiene and Sanitation'),
+    # )
+    # interests = models.CharField(
+    #     max_length=30,
+    #     choices=interests_choices,
+    #     default='All'
+    # )
+    # GENDER_CHOICES = (
+    #     ('N','None'),
+    #     ('M', 'Male'),
+    #     ('F', 'Female'),
+    # )
+    # gender = models.CharField(max_length=1,choices=GENDER_CHOICES,default='N')
 
 
     def __str__(self):

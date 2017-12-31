@@ -194,6 +194,7 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
   </div>
 </div>
 <div>
+<div class="w3-container w3-margin w3-padding-large">
   <div class="w3-center w3-red" id='causes'>
     <div>
     <div class="w3-center w3-padding-64">
@@ -365,7 +366,7 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
     </div>
   <p><br></p>
   </div>
-
+</div>
 </div>
 
   <div class="w3-row-padding w3-blue-grey" id="about">
@@ -396,7 +397,7 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
         <img src="{% static "accounts/user.png" %}" style="width:100%">
         {% endif %}
         <div class="w3-container">
-          <h3>{{ spark.spark_name }}</h3>
+          <h3>{{ spark.spark_user.user }}</h3>
           <p class="w3-opacity">CEO & Founder</p>
           <!-- <p style="height: 100px;resize: vertical;overflow: auto;">{{ spark.spark_info }}</p> -->
           <p>{{ spark.spark_info|truncatewords:10 }}</p>
@@ -438,7 +439,7 @@ html,body,h1,h2,h3,h4 {font-family:"Lato", sans-serif}
     <p>Please suggets ways to improve malnutrition in Our Country.</p>
   </div>
 
-      <div class="w3-container">
+      <div class="">
         <form method="post" class="w3-container">
           {% csrf_token %}
           {{ form.as_p }}
@@ -529,3 +530,4 @@ function myFunction() {
 
 </body>
 </html>
+

@@ -17,7 +17,8 @@ def homepage(request):
         return render(request,'accounts/home.html',)
 
 def malnutrition(request):
-    sparks=spark.objects.order_by('spark_name')
+    #sparks=spark.objects.order_by('spark_name')
+    sparks=spark.objects.all()
     if request.user.is_authenticated:
         userpro=UserProfile.objects.get(user=request.user)
     else:
@@ -73,6 +74,15 @@ def malnutrition(request):
     #             except BadHeaderError:
     #                 return HttpResponse('Invalid header found.')
     #             return redirect('sparks:success')
+
+    # n=len(sparks)
+    # if n%3==0
+    #     for i in range(n/3)
+    #         x=x+'x'
+    # elif n%3=1
+
+    # else
+
     if request.user.is_authenticated:
         return render(request,'accounts/malnutrition.html',{'sparks':sparks,'userpro':userpro,'form':form,'form_one':form_one})
     else:

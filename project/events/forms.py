@@ -16,6 +16,15 @@ class EventForm(forms.ModelForm):
 
         )
 
+
+class SubscriptionForm(forms.Form):
+    subscriber_email = forms.EmailField(required=True,widget=forms.TextInput(attrs={'class' : 'w3-input w3-border','placeholder':'Your Email'}))
+
+    def __init__(self, *args, **kwargs):
+        super(SubscriptionForm, self).__init__(*args, **kwargs)
+        self.fields['subscriber_email'].label = ""
+
+
     # def save(self):
     #     if self.instance.pk:
     #         return super(AddForm, self).save()

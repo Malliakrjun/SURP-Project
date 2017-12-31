@@ -76,8 +76,8 @@ and is wrapped around the whole page content, except for the footer in this exam
           <p>{{ event.description }}</p>
           <p class="w3-left"><button class="w3-button w3-white w3-border" onclick="likeFunction(this)"><b><i class="fa fa-thumbs-up"></i> Attending</b></button></p>
           <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-green"><i class="fa fa-thumbs-up"></i> &nbsp;Upvote</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-blue" onclick="myFunction('{{ post.pk }}')"><i class="fa fa-comment"></i> &nbsp;Comments</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-blue" onclick="location.href='{{ post.get_absolute_url }}'"> &nbsp;Read More..</button>
+        <button type="button" class="w3-button w3-margin-bottom w3-dark-grey w3-right" onclick="myFunction('{{ post.pk }}')"><i class="fa fa-comment"></i> &nbsp;Comments</button>
+        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-dark-grey" onclick="location.href='{{ post.get_absolute_url }}'"> &nbsp;Read More..</button>
         <div id="{{ post.pk }}" style="display:none">
       {% for comment in event.comments.all %}
       <div class="w3-row">
@@ -237,6 +237,46 @@ and is wrapped around the whole page content, except for the footer in this exam
       </div>
       <hr>
 
+      <div class="w3-white w3-margin">
+        <div class="w3-container w3-padding w3-black">
+          <h4>Recent Events</h4>
+        </div>
+        {% for event in completed_events %}
+      <!-- Blog entry -->
+      <div class="w3-container w3-white w3-margin w3-padding-large">
+        <div class="w3-center">
+          <h3>{{ event.event_title }}</h3>
+          <h5><span class="w3-opacity">{{ event.event_time }}</span></h5>
+        </div>
+
+        <div class="w3-justify">
+        {% if event.image %}
+          <img src="{{ event.image.url }}" style="width:100%" class="w3-padding-16">
+        {% endif %}
+          <p>{{ event.description }}</p>
+        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-blue" onclick="myFunction('{{ post.pk }}')"><i class="fa fa-comment"></i> &nbsp;Comments</button>
+        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom w3-blue" onclick="location.href='{{ post.get_absolute_url }}'"> &nbsp;Read More..</button>
+        <div id="{{ post.pk }}" style="display:none">
+      {% for comment in event.comments.all %}
+      <div class="w3-row">
+      <hr>
+          <div class="w3-col l2 m3">
+            <img src="{% get_commenter comment.author %}" alt="user" class="w3-left w3-circle w3-margin-right" style="width:60px;">
+          </div>
+          <div class="w3-col l10 m9">
+            <h4>{{ comment.author }} <span class="w3-opacity w3-medium">{{ comment.created }}</span></h4>
+            <p>{{ comment.body }}</p>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+        </div>
+<hr>
+      </div>
+
+{% endfor %}
+      </div>
+      <hr>
       <!-- Advertising -->
       <div class="w3-white w3-margin">
         <div class="w3-container w3-padding w3-black">
@@ -328,10 +368,18 @@ and is wrapped around the whole page content, except for the footer in this exam
         <div class="w3-container w3-padding w3-black">
           <h4>Subscribe</h4>
         </div>
+
         <div class="w3-container w3-white">
-          <p>Enter your e-mail below and get notified on the latest blog posts.</p>
-          <p><input class="w3-input w3-border" type="text" placeholder="Enter e-mail" style="width:100%"></p>
-          <p><button type="button" onclick="document.getElementById('subscribe').style.display='block'" class="w3-button w3-block w3-green">Subscribe</button></p>
+          <p>Enter your e-mail below and get notified on the latest events.</p>
+          <!-- <p><input class="w3-input w3-border" type="text" placeholder="Enter e-mail" style="width:100%"></p>
+          <p><button type="button" onclick="document.getElementById('subscribe').style.display='block'" class="w3-button w3-block w3-green">Subscribe</button></p> -->
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-actions">
+                <button type="submit" class="w3-button w3-black w3-block">Subscribe</button>
+            </div>
+        </form>
         </div>
       </div>
 

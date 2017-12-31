@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 # from .forms import PostForm
 from django.shortcuts import redirect
+#from django.views.generic import RedirectView
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
@@ -13,7 +14,14 @@ from .forms import CommentForm
 
 # Create your views here.
 def post_list(request):
+    if request.user.is_authenticated:
+        userpro=UserProfile.objects.get(user=request.user)
+    # else:
+    #     userpro=None
+
     object_list = Post.published.all()
+    if request.user.is_authenticated():
+        latest_user_posts=object_list.filter(author=request.user)[:5]
     paginator = Paginator(object_list, 3) # 3 posts in each page
     page = request.GET.get('page')
     try:
@@ -24,7 +32,11 @@ def post_list(request):
     except EmptyPage:
  # If page is out of range deliver last page of results
         posts = paginator.page(paginator.num_pages)
-    return render(request,'blog/post_list.html',{'posts': posts,})
+    if request.user.is_authenticated():
+        return render(request,'blog/post_list.html',{'posts': posts,'userpro':userpro,'latest_user_posts':latest_user_posts})
+    else:
+        return render(request,'blog/post_list.html',{'posts': posts,'latest_user_posts':''})
+
     # return render(request,'blog/post_list.html',{ 'page': page,'posts': posts})
 
     # posts = Post.published.all().order_by('published_date')

@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from accounts.models import UserProfile
+
 class PublishedManager(models.Manager):
     def get_queryset(self):
         return super(PublishedManager,self).get_queryset().filter(status='published')
@@ -14,8 +16,9 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,unique_for_date='created',null=True)
-    author = models.ForeignKey(User,related_name='blog_posts')
+    author = models.ForeignKey(User,related_name='author')
     body = models.TextField()
+    likes = models.ManyToManyField(User,blank=True)
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True,null=True)
     status = models.CharField(max_length=10,choices=STATUS_CHOICES,default='draft')
@@ -37,7 +40,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
-    author=models.CharField(max_length=100,default='')
+    author = models.ForeignKey(User,related_name='comments_by_author')
     body = models.TextField()
     created = models.DateTimeField(default=timezone.now)
     active = models.BooleanField(default=True)
