@@ -25,7 +25,7 @@ SECRET_KEY = 'oc!c^w2z^ysg1j*v#ky^qt5fez*k2&z4k(ob$n6^u^3g71akqf'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['malli.pythonanywhere.com','127.0.0.1']
+ALLOWED_HOSTS = ['www.sparkstofire.org','127.0.0.1']
 
 
 # Application definition
