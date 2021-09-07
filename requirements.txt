@@ -16,7 +16,7 @@ numpy==1.13.0+mkl
 oauthlib==2.0.2
 olefile==0.44
 pandas==0.20.2
-Pillow==4.1.1
+Pillow==8.3.2
 psycopg2==2.7.3
 pyparsing==2.2.0
 python-dateutil==2.6.0
